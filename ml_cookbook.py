@@ -1,0 +1,754 @@
+
+#---------------------------------------------------------------------------------------------------------------------------------
+### Authenticator
+#---------------------------------------------------------------------------------------------------------------------------------
+import streamlit as st
+st.set_option('deprecation.showPyplotGlobalUse', False)
+#---------------------------------------------------------------------------------------------------------------------------------
+### Template Graphics
+#---------------------------------------------------------------------------------------------------------------------------------
+import streamlit.components.v1 as components
+#---------------------------------------------------------------------------------------------------------------------------------
+### Import Libraries
+#---------------------------------------------------------------------------------------------------------------------------------
+from streamlit_extras.stoggle import stoggle
+from ydata_profiling import ProfileReport
+from streamlit_pandas_profiling import st_profile_report
+#----------------------------------------
+import os
+import time
+import warnings
+warnings.filterwarnings("ignore")
+from PIL import Image
+from random import randint
+#----------------------------------------
+import json
+import holidays
+import base64
+import itertools
+import codecs
+from datetime import datetime, timedelta, date
+#from __future__ import division
+#----------------------------------------
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+#----------------------------------------
+import plotly.express as px
+import plotly.graph_objects as go
+import plotly.figure_factory as ff
+from plotly.subplots import make_subplots
+import plotly.offline as pyoff
+import altair as alt
+#----------------------------------------
+import sweetviz as sv
+import pygwalker as pyg
+#----------------------------------------
+from sklearn.impute import SimpleImputer, KNNImputer
+#----------------------------------------
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+#----------------------------------------
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from sklearn.feature_selection import SelectKBest, mutual_info_classif, f_classif, f_regression, chi2, VarianceThreshold
+#----------------------------------------
+from sklearn.metrics import accuracy_score
+#---------------------------------------------------------------------------------------------------------------------------------
+### Title and description for your Streamlit app
+#---------------------------------------------------------------------------------------------------------------------------------
+#import custom_style()
+#image = Image.open('Image_Clariant.png')
+st.set_page_config(page_title="ML CookBook | v1.0",
+                   layout="wide",
+                   #page_icon='https://www.clariant.com/images/clariant-logo-small.svg',                   
+                   initial_sidebar_state="collapsed")
+#st.sidebar.image(image, use_column_width='auto') 
+#----------------------------------------
+st.title("Machine Learning CookBook | v1.0")
+st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a>', 
+            unsafe_allow_html=True)
+st.info('**Disclaimer : This app is created for internal use. unauthorized uses or copying is strictly prohibited.**', icon="ℹ️")
+#----------------------------------------
+# Set the background image
+st.divider()
+#---------------------------------------------------------------------------------------------------------------------------------
+### Types
+#---------------------------------------------------------------------------------------------------------------------------------
+st.sidebar.header("1. Contents", divider='blue')
+st.sidebar.info('Please choose the below options to get more details .', icon="ℹ️")
+#----------------------------------------
+eda = st.sidebar.radio("**1.1 Exploratory Data Analysis**", ["Basics",
+                                                    "Feature Import & Identification", 
+                                                    "Feature Removal",
+                                                    "Feature Visualization", 
+                                                    "Feature Correleation",
+                                                    "Feature Cleaning", 
+                                                    "Feature Encoding",
+                                                    "Feature Scalling",
+                                                    "Feature Sampling",
+                                                    "Feature Selection"])
+st.sidebar.divider()
+#---------------------------------------------------------------------------------------------------------------------------------
+## Basics
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Basics" :
+
+  stats_expander = st.expander("**Knowledge**", expanded=True)
+  with stats_expander: 
+        
+        col1, col2 = st.columns((0.3,0.6))
+        with col1:
+            
+            st.info('''
+            **Machine Learning**
+            ''')  
+
+        with col2:  
+
+            st.info('''        
+        **Feature engineering** 
+                    
+            It is a very important part of dataset preparation. 
+            During the process, It create a set of attributes (input features) that represent various behavior patterns towards the target features. 
+            In a broad sense, features are the measurable characteristics of observations that a ML model takes into account to predict outcomes.
+    
+        A typical **Exploratory Data Analysis (EDA)** consists of the following steps:
+    
+        - 1 | **Feature Import** :               Import and read the collected dataset.
+        - 2 | **Feature Removal** :              Remove unwanted features.
+        - 3 | **Feature Identification** :       Variable type identifications.
+        - 4 | **Feature Visualization** :        Graphical representation of univariate and bi variate analysis.
+        - 5 | **Feature Scalling** :             Rescalling the features.  
+        - 6 | **Feature Cleaning** :             Checking missing values, duplicate values and outlier and do the required treatment. 
+        - 7 | **Feature Encoding** :             Conversion of the categorical variable into continuous variable.
+        - 8 | **Feature Selection** :            Checking of multi collinearity, p values, Recursive feature elimination (via chi-square method).
+        - 9 | **Feature Sampling** :             Redefine the datasets to increase the performance.
+        ''')
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Import & Identification
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Import & Identification" :
+        
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider() 
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))
+            
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+
+                st.subheader("Feature Information", divider='blue') 
+
+                st.table(df.head(3))
+                st.divider() 
+
+                col1, col2, col3, col4, col5, col6 = st.columns(6)
+
+                col1.metric('**Number of input values (rows)**', df.shape[0], help='number of rows in the dataframe')
+                col2.metric('**Number of variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
+                col3.metric('**Number of numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
+                col4.metric('**Number of categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Removal
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Removal":
+
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+
+                st.subheader("Feature Removal", divider='blue') 
+
+                if st.checkbox("**🗑️ Feature Drop**"):
+                    feature_to_drop = st.selectbox("**Select Feature to Drop**", df.columns)
+                    #df_dropped = df.drop(columns=[feature_to_drop])
+                    if feature_to_drop:
+                        #col1, col2, col3 = st.columns([1, 0.5, 1])
+                            if st.button("Apply", key="delete"):
+                                st.session_state.delete_features = True
+                                st.session_state.df = df.drop(feature_to_drop, axis=1)
+                                
+                                st.divider()
+                                st.table(st.session_state.df.head(2))
+                                # Download link for treated data
+                                st.download_button("**Download Deleted Data**", st.session_state.df.to_csv(index=False), file_name="deleted_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Visualization
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Visualization":
+
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+
+                st.subheader("Feature Visualization | Playground", divider='blue')       
+
+                pyg_html = pyg.to_html(df)
+                components.html(pyg_html, height=1000, scrolling=True)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Correleation
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Correleation":
+
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+
+                st.subheader("Feature Correleation",divider='blue')
+
+                #----------------------------------------
+                for feature in df.columns: 
+                    if df[feature].dtype == 'object': 
+                        print('\n')
+                        print('feature:',feature)
+                        print(pd.Categorical(df[feature].unique()))
+                        print(pd.Categorical(df[feature].unique()).codes)
+                        df[feature] = pd.Categorical(df[feature]).codes
+                #----------------------------------------
+                        
+                def plot_feature_correlation(df):
+                    # Calculate correlation matrix
+                    corr_matrix = df.corr()
+
+                    # Plot heatmap
+                    plt.figure(figsize=(10, 8))
+                    sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f")
+                    plt.title("Feature Correlation Heatmap")
+                    plt.xticks(rotation=45)
+                    plt.yticks(rotation=45)
+                    st.pyplot()
+
+                plot_feature_correlation(df)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Cleaning
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Cleaning":
+
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))                
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+                
+                st.subheader("Missing Values Check & Treatment",divider='blue')
+                col1, col2 = st.columns((0.2,0.8))
+
+                with col1:
+                    def check_missing_values(data):
+                            missing_values = data.isnull().sum()
+                            missing_values = missing_values[missing_values > 0]
+                            return missing_values 
+                    missing_values = check_missing_values(df)
+
+                    if missing_values.empty:
+                            st.success("**No missing values found!**")
+                    else:
+                            st.warning("**Missing values found!**")
+                            st.write("**Number of missing values:**")
+                            st.table(missing_values)
+
+                            with col2:        
+                                #treatment_option = st.selectbox("**Select a treatment option**:", ["Impute with Mean","Drop Missing Values", ])
+        
+                                # Perform treatment based on user selection
+                                #if treatment_option == "Drop Missing Values":
+                                    #df = df.dropna()
+                                    #st.success("Missing values dropped. Preview of the cleaned dataset:")
+                                    #st.table(df.head())
+            
+                                #elif treatment_option == "Impute with Mean":
+                                    #df = df.fillna(df.mean())
+                                    #st.success("Missing values imputed with mean. Preview of the imputed dataset:")
+                                    #st.table(df.head())
+                                 
+                                # Function to handle missing values for numerical variables
+                                def handle_numerical_missing_values(data, numerical_strategy):
+                                    imputer = SimpleImputer(strategy=numerical_strategy)
+                                    numerical_features = data.select_dtypes(include=['number']).columns
+                                    data[numerical_features] = imputer.fit_transform(data[numerical_features])
+                                    return data
+
+                                # Function to handle missing values for categorical variables
+                                def handle_categorical_missing_values(data, categorical_strategy):
+                                    imputer = SimpleImputer(strategy=categorical_strategy, fill_value='no_info')
+                                    categorical_features = data.select_dtypes(exclude=['number']).columns
+                                    data[categorical_features] = imputer.fit_transform(data[categorical_features])
+                                    return data            
+
+                                numerical_strategies = ['mean', 'median', 'most_frequent']
+                                categorical_strategies = ['constant','most_frequent']
+                                st.write("**Missing Values Treatment:**")
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    selected_numerical_strategy = st.selectbox("**Select a strategy for treatment : Numerical variables**", numerical_strategies)
+                                with col2:
+                                    selected_categorical_strategy = st.selectbox("**Select a strategy for treatment : Categorical variables**", categorical_strategies)  
+                                
+                                #if st.button("**Apply Missing Values Treatment**"):
+                                cleaned_df = handle_numerical_missing_values(df, selected_numerical_strategy)
+                                cleaned_df = handle_categorical_missing_values(cleaned_df, selected_categorical_strategy)   
+                                st.table(cleaned_df.head(2))
+
+                                # Download link for treated data
+                                st.download_button("**Download Treated Data**", cleaned_df.to_csv(index=False), file_name="treated_data.csv")
+
+                #with col2:
+
+                st.subheader("Duplicate Values Check",divider='blue') 
+                if st.checkbox("Show Duplicate Values"):
+                    if missing_values.empty:
+                        st.table(df[df.duplicated()].head(2))
+                    else:
+                        st.table(cleaned_df[cleaned_df.duplicated()].head(2))
+
+                #with col4:
+
+                    #x_column = st.selectbox("Select x-axis column:", options = df.columns.tolist()[0:], index = 0)
+                    #y_column = st.selectbox("Select y-axis column:", options = df.columns.tolist()[0:], index = 1)
+                    #chart = alt.Chart(df).mark_boxplot(extent='min-max').encode(x=x_column,y=y_column)
+                    #st.altair_chart(chart, theme=None, use_container_width=True)  
+
+                st.subheader("Outliers Check & Treatment",divider='blue')
+                def check_outliers(data):
+                                # Assuming we're checking for outliers in numerical columns
+                                numerical_columns = data.select_dtypes(include=[np.number]).columns
+                                outliers = pd.DataFrame(columns=['Column', 'Number of Outliers'])
+
+                                for column in numerical_columns:
+                                    Q1 = data[column].quantile(0.25)
+                                    Q3 = data[column].quantile(0.75)
+                                    IQR = Q3 - Q1
+
+                                    # Define a threshold for outliers
+                                    threshold = 1.5
+
+                                    # Find indices of outliers
+                                    outliers_indices = ((data[column] < Q1 - threshold * IQR) | (data[column] > Q3 + threshold * IQR))
+
+                                    # Count the number of outliers
+                                    num_outliers = outliers_indices.sum()
+                                    outliers = outliers._append({'Column': column, 'Number of Outliers': num_outliers}, ignore_index=True)
+
+                                return outliers
+                
+                if missing_values.empty:
+                    df = df.copy()
+                else:
+                    df = cleaned_df.copy()
+
+                col1, col2 = st.columns((0.2,0.8))
+
+                with col1:
+                        # Check for outliers
+                        outliers = check_outliers(df)
+
+                        # Display results
+                        if outliers.empty:
+                            st.success("**No outliers found!**")
+                        else:
+                            st.warning("**Outliers found!**")
+                            st.write("**Number of outliers:**")
+                            st.table(outliers)
+                    
+                with col2:
+                        # Treatment options
+                        treatment_option = st.selectbox("**Select a treatment option:**", ["Cap Outliers","Drop Outliers", ])
+
+                            # Perform treatment based on user selection
+                        if treatment_option == "Drop Outliers":
+                                df = df[~outliers['Column'].isin(outliers[outliers['Number of Outliers'] > 0]['Column'])]
+                                st.success("Outliers dropped. Preview of the cleaned dataset:")
+                                st.write(df.head())
+
+                        elif treatment_option == "Cap Outliers":
+                                df = df.copy()
+                                for column in outliers['Column'].unique():
+                                    Q1 = df[column].quantile(0.25)
+                                    Q3 = df[column].quantile(0.75)
+                                    IQR = Q3 - Q1
+                                    threshold = 1.5
+
+                                    # Cap outliers
+                                    df[column] = np.where(df[column] < Q1 - threshold * IQR, Q1 - threshold * IQR, df[column])
+                                    df[column] = np.where(df[column] > Q3 + threshold * IQR, Q3 + threshold * IQR, df[column])
+
+                                    st.success("Outliers capped. Preview of the capped dataset:")
+                                    st.write(df.head())
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Encoding
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Encoding":
+    
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))                
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+        
+                st.subheader("Feature Encoding",divider='blue')
+
+                # Function to perform feature encoding
+                def encode_features(data, encoder):
+                    if encoder == 'Label Encoder':
+                        encoder = LabelEncoder()
+                        encoded_data = data.apply(encoder.fit_transform)
+                        
+                    elif encoder == 'One-Hot Encoder':
+                        encoder = OneHotEncoder(drop='first', sparse=False)
+                        encoded_data = pd.DataFrame(encoder.fit_transform(data), columns=encoder.get_feature_names(data.columns))
+                    return encoded_data
+                    
+                encoding_methods = ['Label Encoder', 'One-Hot Encoder']
+                selected_encoder = st.selectbox("**Select a feature encoding method**", encoding_methods)
+                    
+                encoded_df = encode_features(df, selected_encoder)
+                st.table(encoded_df.head(2))  
+
+                # Download link for encoded data
+                st.download_button("**Download Encoded Data**", encoded_df.to_csv(index=False), file_name="encoded_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Scalling
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Scalling":
+    
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))                
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+
+                    st.subheader("Feature Scalling",divider='blue') 
+
+                    # Function to perform feature scaling
+                    def scale_features(data, scaler):
+                        if scaler == 'Standard Scaler':
+                            scaler = StandardScaler()
+                        elif scaler == 'Min-Max Scaler':
+                            scaler = MinMaxScaler()
+                        elif scaler == 'Robust Scaler':
+                            scaler = RobustScaler()
+
+                        scaled_data = scaler.fit_transform(data)
+                        scaled_df = pd.DataFrame(scaled_data, columns=data.columns)
+                        return scaled_df
+                    
+                    scaling_methods = ['Standard Scaler', 'Min-Max Scaler', 'Robust Scaler']
+                    selected_scaler = st.selectbox("**Select a feature scaling method**", scaling_methods)
+
+                    if st.button("**Apply Feature Scalling**", key='f_scl'):
+                        scaled_df = scale_features(encoded_df, selected_scaler)
+                        st.table(scaled_df.head(2))
+                        # Download link for scaled data
+                        st.download_button("**Download Scaled Data**", scaled_df.to_csv(index=False), file_name="scaled_data.csv")
+                    else:
+                        df = df.copy()
+                        st.table(df.head(2))
+                        # Download link for scaled data
+                        st.download_button("**Download Original Data**", df.to_csv(index=False), file_name="original_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Sampling
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Sampling":
+    
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            with col2:
+
+                st.subheader("Feature Scalling",divider='blue') 
+
+                def random_feature_sampling(df, num_features):
+                    sampled_features = df.sample(n=num_features, axis=1)
+                    return sampled_features
+                
+                num_features = st.number_input("Number of Features to Sample", min_value=1, step=1, value=1)
+                sampled_features = random_feature_sampling(df, num_features)
+                st.write(sampled_features.head(2))
+
+                st.download_button("**Download Sampled Data**", df.to_csv(index=False), file_name="sampled_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Selection
+#---------------------------------------------------------------------------------------------------------------------------------
+
+if eda == "Feature Selection":
+    
+    col1, col2 = st.columns((0.2,0.9))
+    with col1:
+
+        st.subheader("Input", divider='blue') 
+        file1 = st.file_uploader("**Choose a file**",
+                                type=["xlsx","csv"],
+                                accept_multiple_files=True,
+                                key=0)
+        st.divider()       
+        if file1 is not None:
+          df = pd.DataFrame()
+          for file1 in file1:
+            df = pd.read_csv(file1)
+            #st.subheader("Preview of the Input Dataset :")
+            #st.write(df.head(3))
+
+            from time import sleep
+            from stqdm import stqdm
+            for _ in stqdm(range(20)):
+                sleep(0.5)
+
+            target_variable = st.multiselect("**Target (Dependent) Variable**", df.columns)
+
+            with col2:
+
+                st.subheader("Feature Selection",divider='blue') 
+                #----------------------------------------
+                for feature in df.columns: 
+                    if df[feature].dtype == 'object': 
+                        print('\n')
+                        print('feature:',feature)
+                        print(pd.Categorical(df[feature].unique()))
+                        print(pd.Categorical(df[feature].unique()).codes)
+                        df[feature] = pd.Categorical(df[feature]).codes
+                #----------------------------------------
+
+                fsel_method = st.selectbox("**Select Feature Selection Method**", ["VIF", "SelectKBest", "VarianceThreshold" ])
+                st.divider()
+                if fsel_method == "VIF":   
+                    
+                    st.markdown("**Method 1 : Checking VIF Values**")
+                    vif_threshold = st.number_input("**VIF Threshold**", 1.5, 10.0, 5.0)
+
+                    def calculate_vif(data):
+                        X = data.values
+                        vif_data = pd.DataFrame()
+                        vif_data["Variable"] = data.columns
+                        vif_data["VIF"] = [variance_inflation_factor(X, i) for i in range(X.shape[1])]
+                        vif_data = vif_data.sort_values(by="VIF", ascending=False)
+                        return vif_data
+
+                    # Function to drop variables with VIF exceeding the threshold
+                    def drop_high_vif_variables(data, threshold):
+                        vif_data = calculate_vif(data)
+                        high_vif_variables = vif_data[vif_data["VIF"] > threshold]["Variable"].tolist()
+                        data = data.drop(columns=high_vif_variables)
+                        return data
+                                       
+                    st.markdown(f"Iterative VIF Thresholding (Threshold: {vif_threshold})")
+                    #X = df.drop(columns = target_variable)
+                    vif_data = drop_high_vif_variables(df, vif_threshold)
+                    vif_data = vif_data.drop(columns = target_variable)
+                    selected_features = vif_data.columns
+                    st.markdown("**Selected Features (considering VIF values in ascending orders)**")
+                    st.table(selected_features)
+
+                if fsel_method == "SelectKBest":  
+
+                    st.markdown("**Method 2 : Checking Selectkbest Method**")          
+                    method = st.selectbox("**Select Feature Selection Method**", ["f_classif", "f_regression", "chi2", "mutual_info_classif"])
+                    num_features_to_select = st.slider("**Select Number of Independent Features**", min_value=1, max_value=len(df.columns), value=5)
+
+                    # Perform feature selection
+                    if "f_classif" in method:
+                            feature_selector = SelectKBest(score_func=f_classif, k=num_features_to_select)
+
+                    elif "f_regression" in method:
+                            feature_selector = SelectKBest(score_func=f_regression, k=num_features_to_select)
+
+                    elif "chi2" in method:
+                            # Make sure the data is non-negative for chi2
+                            df[df < 0] = 0
+                            feature_selector = SelectKBest(score_func=chi2, k=num_features_to_select)
+
+                    elif "mutual_info_classif" in method:
+                            # Make sure the data is non-negative for chi2
+                            df[df < 0] = 0
+                            feature_selector = SelectKBest(score_func=mutual_info_classif, k=num_features_to_select)
+
+                    X = df.drop(columns = target_variable)  # Adjust 'Target' to your dependent variable
+                    y = df[target_variable]  # Adjust 'Target' to your dependent variable
+                    X_selected = feature_selector.fit_transform(X, y)
+
+                    # Display selected features
+                    selected_feature_indices = feature_selector.get_support(indices=True)
+                    selected_features_kbest = X.columns[selected_feature_indices]
+                    st.markdown("**Selected Features (considering values in 'recursive feature elimination' method)**")
+                    st.table(selected_features_kbest)
+
+                if fsel_method == "VarianceThreshold":  
+
+                    st.markdown("**Method 3 : Checking VarianceThreshold Method**")    
+                    def variance_threshold_feature_selection(df, threshold):
+
+                        X = df.drop(columns=df[target_variable])  
+                        selector = VarianceThreshold(threshold=threshold)
+                        X_selected = selector.fit_transform(X)
+
+                        selected_feature_indices = selector.get_support(indices=True)
+
+                        selected_feature_names = X.columns[selected_feature_indices]
+                        selected_df = pd.DataFrame(X_selected, columns=selected_feature_names)
+
+                        return selected_df
+                    
+                    threshold = st.number_input("Variance Threshold", min_value=0.0, step=0.01, value=0.0)
+                    selected_df = variance_threshold_feature_selection(df, threshold)
+                    st.write(selected_df.head())
