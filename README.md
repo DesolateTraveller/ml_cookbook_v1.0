@@ -1,11 +1,10 @@
 # ml_cookbook_v1.0
 This repository explains the each stages of 'feature engineering' and 'exploratory data analysis (EDA)'
 
-Feature engineering
-                    
-            It is a very important part of dataset preparation. 
-            During the process, It create a set of attributes (input features) that represent various behavior patterns towards the target features. 
-            In a broad sense, features are the measurable characteristics of observations that a ML model takes into account to predict outcomes.
+        Feature engineering
+        It is a very important part of dataset preparation. 
+        During the process, It create a set of attributes (input features) that represent various behavior patterns towards the target features. 
+        In a broad sense, features are the measurable characteristics of observations that a ML model takes into account to predict outcomes.
     
         A typical **Exploratory Data Analysis (EDA)** consists of the following steps:
     
