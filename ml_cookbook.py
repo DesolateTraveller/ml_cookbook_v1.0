@@ -66,6 +66,7 @@ st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakrab
 st.info('**Disclaimer : Unauthorized uses or copying of the app is strictly prohibited.**', icon="ℹ️")
 #----------------------------------------
 # Set the background image
+st.divider()
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Types
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +90,7 @@ st.sidebar.divider()
 
 if eda == "Basics" :
 
-  stats_expander = st.expander("**Knowledge**", expanded=False)
+  stats_expander = st.expander("**Knowledge**", expanded=True)
   with stats_expander: 
         
         col1, col2 = st.columns((0.3,0.6))
@@ -120,7 +121,7 @@ if eda == "Basics" :
         - 8 | **Feature Selection** :            Checking of multi collinearity, p values, Recursive feature elimination (via chi-square method).
         - 9 | **Feature Sampling** :             Redefine the datasets to increase the performance.
         ''')
-st.divider()
+
 #---------------------------------------------------------------------------------------------------------------------------------
 ## Feature Import & Identification
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -131,7 +132,7 @@ if eda == "Feature Import & Identification" :
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -172,7 +173,7 @@ if eda == "Feature Removal":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -217,7 +218,7 @@ if eda == "Feature Visualization":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -251,7 +252,7 @@ if eda == "Feature Correleation":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -306,7 +307,7 @@ if eda == "Feature Cleaning":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -484,7 +485,7 @@ if eda == "Feature Encoding":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -535,7 +536,7 @@ if eda == "Feature Scalling":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -593,7 +594,7 @@ if eda == "Feature Sampling":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -634,7 +635,7 @@ if eda == "Feature Selection":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**Choose a file**",
+        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
