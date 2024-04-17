@@ -98,6 +98,13 @@ if eda == "Basics" :
             
             st.info('''
             **Machine Learning**
+
+            Machine learning is a field of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed. Here are some key points about machine learning:
+
+            - It involves developing algorithms that can analyze data and make predictions or decisions without being specifically told what to do. The algorithms "learn" by detecting patterns in data.
+            - Machine learning algorithms build a mathematical model from sample data, known as "training data", in order to make predictions or decisions without being explicitly programmed to perform the task.
+
+            In summary, machine learning allows computers to learn patterns from data in order to make decisions and predictions, rather than requiring explicit programming for every task. It allows for systems and services that adapt and evolve over time.
             ''')  
 
         with col2:  
