@@ -66,14 +66,13 @@ st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakrab
 st.info('**Disclaimer : Unauthorized uses or copying of the app is strictly prohibited.**', icon="ℹ️")
 #----------------------------------------
 # Set the background image
-st.divider()
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Types
 #---------------------------------------------------------------------------------------------------------------------------------
-st.sidebar.header("1. Contents", divider='blue')
-st.sidebar.info('Please choose the below options to get more details .', icon="ℹ️")
+st.sidebar.header("Contents", divider='blue')
+st.sidebar.info('Please choose from the following options and follow the instructions to start the application.', icon="ℹ️")
 #----------------------------------------
-eda = st.sidebar.radio("**1.1 Exploratory Data Analysis**", ["Basics",
+eda = st.sidebar.radio("**:blue[Choose an option]**", ["Basics",
                                                     "Feature Import & Identification", 
                                                     "Feature Removal",
                                                     "Feature Visualization", 
@@ -105,9 +104,9 @@ if eda == "Basics" :
             st.info('''        
         **Feature engineering** 
                     
-            It is a very important part of dataset preparation. 
-            During the process, It create a set of attributes (input features) that represent various behavior patterns towards the target features. 
-            In a broad sense, features are the measurable characteristics of observations that a ML model takes into account to predict outcomes.
+          It is a very important part of dataset preparation. 
+          During the process, It create a set of attributes (input features) that represent various behavior patterns towards the target features. 
+          In a broad sense, features are the measurable characteristics of observations that a ML model takes into account to predict outcomes.
     
         A typical **Exploratory Data Analysis (EDA)** consists of the following steps:
     
@@ -121,7 +120,7 @@ if eda == "Basics" :
         - 8 | **Feature Selection** :            Checking of multi collinearity, p values, Recursive feature elimination (via chi-square method).
         - 9 | **Feature Sampling** :             Redefine the datasets to increase the performance.
         ''')
-
+st.divider()
 #---------------------------------------------------------------------------------------------------------------------------------
 ## Feature Import & Identification
 #---------------------------------------------------------------------------------------------------------------------------------
