@@ -3,7 +3,6 @@
 ### Authenticator
 #---------------------------------------------------------------------------------------------------------------------------------
 import streamlit as st
-st.set_option('deprecation.showPyplotGlobalUse', False)
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Template Graphics
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -19,7 +18,6 @@ import os
 import time
 import warnings
 warnings.filterwarnings("ignore")
-from PIL import Image
 from random import randint
 #----------------------------------------
 import json
@@ -28,7 +26,6 @@ import base64
 import itertools
 import codecs
 from datetime import datetime, timedelta, date
-#from __future__ import division
 #----------------------------------------
 import numpy as np
 import pandas as pd
@@ -42,7 +39,6 @@ from plotly.subplots import make_subplots
 import plotly.offline as pyoff
 import altair as alt
 #----------------------------------------
-import sweetviz as sv
 import pygwalker as pyg
 #----------------------------------------
 from sklearn.impute import SimpleImputer, KNNImputer
@@ -286,7 +282,7 @@ if eda == "Feature Correleation":
                         print(pd.Categorical(df[feature].unique()).codes)
                         df[feature] = pd.Categorical(df[feature]).codes
                 #----------------------------------------
-                        
+                @st.cache_data(ttl="2h")        
                 def plot_feature_correlation(df):
                     # Calculate correlation matrix
                     corr_matrix = df.corr()
@@ -334,6 +330,7 @@ if eda == "Feature Cleaning":
                 col1, col2 = st.columns((0.2,0.8))
 
                 with col1:
+                    @st.cache_data(ttl="2h")
                     def check_missing_values(data):
                             missing_values = data.isnull().sum()
                             missing_values = missing_values[missing_values > 0]
@@ -362,6 +359,7 @@ if eda == "Feature Cleaning":
                                     #st.table(df.head())
                                  
                                 # Function to handle missing values for numerical variables
+                                @st.cache_data(ttl="2h")
                                 def handle_numerical_missing_values(data, numerical_strategy):
                                     imputer = SimpleImputer(strategy=numerical_strategy)
                                     numerical_features = data.select_dtypes(include=['number']).columns
@@ -369,6 +367,7 @@ if eda == "Feature Cleaning":
                                     return data
 
                                 # Function to handle missing values for categorical variables
+                                @st.cache_data(ttl="2h")
                                 def handle_categorical_missing_values(data, categorical_strategy):
                                     imputer = SimpleImputer(strategy=categorical_strategy, fill_value='no_info')
                                     categorical_features = data.select_dtypes(exclude=['number']).columns
@@ -409,6 +408,7 @@ if eda == "Feature Cleaning":
                     #st.altair_chart(chart, theme=None, use_container_width=True)  
 
                 st.subheader("Outliers Check & Treatment",divider='blue')
+                @st.cache_data(ttl="2h")
                 def check_outliers(data):
                                 # Assuming we're checking for outliers in numerical columns
                                 numerical_columns = data.select_dtypes(include=[np.number]).columns
@@ -505,7 +505,7 @@ if eda == "Feature Encoding":
             with col2:
         
                 st.subheader("Feature Encoding",divider='blue')
-
+                @st.cache_data(ttl="2h")
                 # Function to perform feature encoding
                 def encode_features(data, encoder):
                     if encoder == 'Label Encoder':
@@ -556,7 +556,7 @@ if eda == "Feature Scalling":
             with col2:
 
                     st.subheader("Feature Scalling",divider='blue') 
-
+                    @st.cache_data(ttl="2h")
                     # Function to perform feature scaling
                     def scale_features(data, scaler):
                         if scaler == 'Standard Scaler':
@@ -614,7 +614,7 @@ if eda == "Feature Sampling":
             with col2:
 
                 st.subheader("Feature Scalling",divider='blue') 
-
+                @st.cache_data(ttl="2h")
                 def random_feature_sampling(df, num_features):
                     sampled_features = df.sample(n=num_features, axis=1)
                     return sampled_features
@@ -673,7 +673,7 @@ if eda == "Feature Selection":
                     
                     st.markdown("**Method 1 : Checking VIF Values**")
                     vif_threshold = st.number_input("**VIF Threshold**", 1.5, 10.0, 5.0)
-
+                    @st.cache_data(ttl="2h")
                     def calculate_vif(data):
                         X = data.values
                         vif_data = pd.DataFrame()
@@ -683,6 +683,7 @@ if eda == "Feature Selection":
                         return vif_data
 
                     # Function to drop variables with VIF exceeding the threshold
+                    @st.cache_data(ttl="2h")
                     def drop_high_vif_variables(data, threshold):
                         vif_data = calculate_vif(data)
                         high_vif_variables = vif_data[vif_data["VIF"] > threshold]["Variable"].tolist()
