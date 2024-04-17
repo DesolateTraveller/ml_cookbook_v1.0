@@ -59,18 +59,15 @@ from sklearn.metrics import accuracy_score
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Title and description for your Streamlit app
 #---------------------------------------------------------------------------------------------------------------------------------
-#import custom_style()
-#image = Image.open('Image_Clariant.png')
 st.set_page_config(page_title="ML CookBook | v1.0",
                    layout="wide",
-                   #page_icon='https://www.clariant.com/images/clariant-logo-small.svg',                   
+                   #page_icon=               
                    initial_sidebar_state="collapsed")
-#st.sidebar.image(image, use_column_width='auto') 
 #----------------------------------------
 st.title("Machine Learning CookBook | v1.0")
 st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a>', 
             unsafe_allow_html=True)
-st.info('**Disclaimer : This app is created for internal use. unauthorized uses or copying is strictly prohibited.**', icon="ℹ️")
+st.info('**Disclaimer : Unauthorized uses or copying of the app is strictly prohibited.**', icon="ℹ️")
 #----------------------------------------
 # Set the background image
 st.divider()
