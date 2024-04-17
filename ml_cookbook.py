@@ -89,7 +89,7 @@ st.sidebar.divider()
 
 if eda == "Basics" :
 
-  stats_expander = st.expander("**Knowledge**", expanded=True)
+  stats_expander = st.expander("**Knowledge**", expanded=False)
   with stats_expander: 
         
         col1, col2 = st.columns((0.3,0.6))
