@@ -11,5 +11,5 @@ holidays
 scikit-learn
 streamlit-extras
 pygwalker
-
+statsmodels
 
