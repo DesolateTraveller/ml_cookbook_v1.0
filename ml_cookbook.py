@@ -139,7 +139,7 @@ if eda == "Feature Import & Identification" :
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -180,7 +180,7 @@ if eda == "Feature Removal":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -225,7 +225,7 @@ if eda == "Feature Visualization":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -259,7 +259,7 @@ if eda == "Feature Correleation":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -314,7 +314,7 @@ if eda == "Feature Cleaning":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -492,7 +492,7 @@ if eda == "Feature Encoding":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -543,7 +543,7 @@ if eda == "Feature Scalling":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -601,7 +601,7 @@ if eda == "Feature Sampling":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
@@ -642,7 +642,7 @@ if eda == "Feature Selection":
     with col1:
 
         st.subheader("Input", divider='blue') 
-        file1 = st.file_uploader("**:blue[Choose a Excel/CSV file]**",
+        file1 = st.file_uploader("**:blue[Choose a file]**",
                                 type=["xlsx","csv"],
                                 accept_multiple_files=True,
                                 key=0)
