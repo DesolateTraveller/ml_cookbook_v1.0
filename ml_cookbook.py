@@ -163,7 +163,8 @@ if eda == "Feature Import & Identification" :
 
                 st.table(df.head(3))
                 st.divider() 
-
+              
+                st.subheader("Characteristics", divider='blue') 
                 col1, col2, col3, col4, col5, col6 = st.columns(6)
 
                 col1.metric('**Number of input values (rows)**', df.shape[0], help='number of rows in the dataframe')
