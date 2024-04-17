@@ -10,6 +10,6 @@ streamlit-authenticator
 holidays
 scikit-learn
 streamlit-extras
-
+pygwalker
 
 
