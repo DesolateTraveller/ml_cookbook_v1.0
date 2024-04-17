@@ -1,5 +1,5 @@
-# ml_cookbook_v1.0
-This repository explains the each stages of 'feature engineering' and 'exploratory data analysis (EDA)'
+
+        This repository explains the stages of 'feature engineering' and 'exploratory data analysis (EDA)'
 
         Feature engineering
         It is a very important part of dataset preparation. 
