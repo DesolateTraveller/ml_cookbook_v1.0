@@ -4,25 +4,13 @@ numpy
 pandas
 matplotlib
 seaborn
-sweetviz
-autoviz
 shap
 streamlit
 streamlit-authenticator
 ydata-profiling
 holidays
 scikit-learn
-xgboost
-catboost
-optuna
-tpot
 streamlit-pandas-profiling
-automl
-sktime
-imblearn
-hyperopt
-gluonts
-graphviz
-lightgbm
+
 
 
