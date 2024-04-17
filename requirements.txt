@@ -1,6 +1,5 @@
 plotly
 dash
-anthropic
 numpy
 pandas
 matplotlib
@@ -18,14 +17,7 @@ catboost
 optuna
 tpot
 streamlit-pandas-profiling
-langchain
-pycaret
-lazypredict
-eli5WLOF6E34F04X
-fbprophet
 automl
-bayes
-awswrangler
 sktime
 imblearn
 hyperopt
