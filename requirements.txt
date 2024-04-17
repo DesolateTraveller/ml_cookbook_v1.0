@@ -7,10 +7,9 @@ seaborn
 shap
 streamlit
 streamlit-authenticator
-ydata-profiling
 holidays
 scikit-learn
-streamlit-pandas-profiling
+
 
 
 
