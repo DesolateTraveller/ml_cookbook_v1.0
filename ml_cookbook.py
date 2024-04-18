@@ -94,8 +94,8 @@ if eda == "Basics" :
   st.info('''
   **:blue[Thank you for visiting the app]**. Please expand the below **:blue[Knowledge]** tab to know more and click the **:blue[sidebar]** to follow the instructions to start the applications.
   ''')
-
-  stats_expander = st.expander("**Knowledge**", expanded=True)
+  st.divider()
+  stats_expander = st.expander("**Knowledge**", expanded=False)
   with stats_expander: 
         
         col1, col2 = st.columns((0.3,0.6))
