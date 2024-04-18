@@ -67,7 +67,7 @@ st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakrab
 st.info('**Disclaimer : Unauthorized uses or copying of the app is strictly prohibited.**', icon="ℹ️")
 #----------------------------------------
 # Set the background image
-st.divider()
+#st.divider()
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Types
 #---------------------------------------------------------------------------------------------------------------------------------
