@@ -126,7 +126,7 @@ if eda == "Basics" :
         - 5 | **Feature Scalling** :             Rescalling the features.  
         - 6 | **Feature Cleaning** :             Checking missing values, duplicate values and outlier and do the required treatment. 
         - 7 | **Feature Encoding** :             Conversion of the categorical variable into continuous variable.
-        - 8 | **Feature Selection** :            Checking of multi collinearity, p values, Recursive feature elimination (via chi-square method).
+        - 8 | **Feature Selection** :            Checking of multi collinearity, p values, recursive feature elimination (via chi-square method).
         - 9 | **Feature Sampling** :             Redefine the datasets to increase the performance.
         ''')
 
