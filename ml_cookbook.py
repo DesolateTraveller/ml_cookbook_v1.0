@@ -252,7 +252,7 @@ if eda == "Feature Visualization":
 
                 st.subheader("Feature Visualization | Playground", divider='blue')       
 
-                pyg_html = pyg.to_html(df)
+                pyg_html = pyg.to_html(df,env='streamlit', return_html=True)
                 components.html(pyg_html, height=1000, scrolling=True)
 
 #---------------------------------------------------------------------------------------------------------------------------------
