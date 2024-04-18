@@ -59,7 +59,7 @@ from sklearn.metrics import accuracy_score
 st.set_page_config(page_title="ML CookBook | v1.0",
                    layout="wide",
                    #page_icon=               
-                   initial_sidebar_state="collapsed")
+                   initial_sidebar_state="auto")
 #----------------------------------------
 st.title("Machine Learning CookBook | v1.0")
 st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a>', 
