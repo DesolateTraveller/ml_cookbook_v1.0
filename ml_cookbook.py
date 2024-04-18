@@ -91,11 +91,9 @@ st.sidebar.divider()
 
 if eda == "Basics" :
 
-      st.info('''
-
-    **:blue[Thank you for visiting the app]**. Please expand the below **:blue[Knowledge]** tab to know more and click the **:blue[sidebar]** to follow the instructions to start the applications.
-
-            ''')
+  st.info('''
+  **:blue[Thank you for visiting the app]**. Please expand the below **:blue[Knowledge]** tab to know more and click the **:blue[sidebar]** to follow the instructions to start the applications.
+  ''')
 
   stats_expander = st.expander("**Knowledge**", expanded=True)
   with stats_expander: 
