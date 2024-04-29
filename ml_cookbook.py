@@ -298,12 +298,12 @@ if eda == "Feature Correleation":
                     corr_matrix = df.corr()
 
                     # Plot heatmap
-                    plt.figure(figsize=(10, 8))
-                    sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f")
+                    fig, ax = plt.subplots(figsize=(10, 8))
+                    ax = sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f")
                     plt.title("Feature Correlation Heatmap")
                     plt.xticks(rotation=45)
                     plt.yticks(rotation=45)
-                    st.pyplot()
+                    st.pyplot(fig)
 
                 plot_feature_correlation(df)
 
