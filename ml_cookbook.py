@@ -298,7 +298,7 @@ if eda == "Feature Correleation":
                     corr_matrix = df.corr()
 
                     # Plot heatmap
-                    fig, ax = plt.subplots(figsize=(10, 8))
+                    fig, ax = plt.subplots(figsize=(10,10))
                     ax = sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f")
                     plt.title("Feature Correlation Heatmap")
                     plt.xticks(rotation=45)
