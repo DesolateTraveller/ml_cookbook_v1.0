@@ -137,7 +137,7 @@ if eda == "Basics" :
 
 if eda == "Feature Import & Identification" :
         
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
