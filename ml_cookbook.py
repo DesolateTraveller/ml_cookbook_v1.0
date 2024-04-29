@@ -95,7 +95,7 @@ if eda == "Basics" :
   stats_expander = st.expander("**Knowledge**", expanded=False)
   with stats_expander: 
         
-        col1, col2 = st.columns((0.3,0.6))
+        col1, col2 = st.columns((0.3,0.7))
         with col1:
             
             st.info('''
@@ -179,7 +179,7 @@ if eda == "Feature Import & Identification" :
 
 if eda == "Feature Removal":
 
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
@@ -224,7 +224,7 @@ if eda == "Feature Removal":
 
 if eda == "Feature Visualization":
 
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
@@ -258,7 +258,7 @@ if eda == "Feature Visualization":
 
 if eda == "Feature Correleation":
 
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
@@ -313,7 +313,7 @@ if eda == "Feature Correleation":
 
 if eda == "Feature Cleaning":
 
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
@@ -491,7 +491,7 @@ if eda == "Feature Cleaning":
 
 if eda == "Feature Encoding":
     
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
@@ -542,7 +542,7 @@ if eda == "Feature Encoding":
 
 if eda == "Feature Scalling":
     
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
@@ -600,7 +600,7 @@ if eda == "Feature Scalling":
 
 if eda == "Feature Sampling":
     
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
@@ -641,7 +641,7 @@ if eda == "Feature Sampling":
 
 if eda == "Feature Selection":
     
-    col1, col2 = st.columns((0.2,0.9))
+    col1, col2 = st.columns((0.2,0.8))
     with col1:
 
         st.subheader("Input", divider='blue') 
