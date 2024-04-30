@@ -57,8 +57,7 @@ from sklearn.metrics import accuracy_score
 ### Title and description for your Streamlit app
 #---------------------------------------------------------------------------------------------------------------------------------
 st.set_page_config(page_title="ML CookBook | v1.0",
-                   layout="wide",
-                   #page_icon=               
+                   layout="wide",              
                    initial_sidebar_state="auto")
 #----------------------------------------
 st.title("Machine Learning CookBook | v1.0")
@@ -67,7 +66,7 @@ st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakrab
 st.info('**Disclaimer : :blue[Thank you for visiting the app] | Unauthorized uses or copying of the app is strictly prohibited | Please expand the below :blue[Knowledge] tab to know more and click the :blue[sidebar] to follow the instructions to start the applications.**', icon="ℹ️")
 #----------------------------------------
 # Set the background image
-#st.divider()
+# st.divider()
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Types
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -92,7 +91,7 @@ st.sidebar.divider()
 if eda == "Basics" :
 
   st.divider()
-  stats_expander = st.expander("**Knowledge**", expanded=False)
+  stats_expander = st.expander("**Knowledge**", expanded=True)
   with stats_expander: 
         
         col1, col2 = st.columns((0.3,0.7))
