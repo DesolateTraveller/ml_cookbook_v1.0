@@ -18,27 +18,27 @@ from streamlit_extras.stoggle import stoggle
 import os
 import time
 import warnings
-warnings.filterwarnings("ignore")
 from random import randint
+warnings.filterwarnings("ignore")
 #----------------------------------------
 import json
-import holidays
 import base64
-import itertools
 import codecs
+import holidays
+import itertools
 from datetime import datetime, timedelta, date
 #----------------------------------------
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib.pyplot as plt
 #----------------------------------------
+import altair as alt
 import plotly.express as px
+import plotly.offline as pyoff
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
-import plotly.offline as pyoff
-import altair as alt
 #----------------------------------------
 import pygwalker as pyg
 #----------------------------------------
