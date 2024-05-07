@@ -105,6 +105,13 @@ if eda == "Basics" :
             - Machine learning algorithms build a mathematical model from sample data, known as "training data", in order to make predictions or decisions without being explicitly programmed to perform the task.
 
             In summary, machine learning allows computers to learn patterns from data in order to make decisions and predictions, rather than requiring explicit programming for every task. It allows for systems and services that adapt and evolve over time.
+            Further it can be subdivided into the following :
+
+            - 1 | **Supervised Learning** 
+            - 2 | **Un supervised Learning**
+            - 3 | **Semi supervised Learning** 
+            - 4 | **Reinforcement Learning**             
+            
             ''')  
 
         with col2:  
