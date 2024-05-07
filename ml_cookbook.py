@@ -93,7 +93,7 @@ if eda == "Basics" :
   stats_expander = st.expander("**Knowledge**", expanded=True)
   with stats_expander: 
         
-        col1, col2 = st.columns((0.4,0.6))
+        col1, col2 = st.columns((0.35,0.65))
         with col1:
             
             st.info('''
