@@ -56,7 +56,7 @@ from sklearn.metrics import accuracy_score
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Title and description for your Streamlit app
 #---------------------------------------------------------------------------------------------------------------------------------
-st.set_page_config(page_title="Feature Engineering CookBook | v2.0",
+st.set_page_config(page_title="Feature Engineering CookBook",
                    layout="wide",              
                    initial_sidebar_state="auto")
 #----------------------------------------
