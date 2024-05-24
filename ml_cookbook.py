@@ -66,7 +66,7 @@ st.markdown('Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakrab
 st.info('**Disclaimer : :blue[Thank you for visiting the app] | Unauthorized uses or copying of the app is strictly prohibited | Please expand the below :blue[Knowledge] tab to know more and click the :blue[sidebar] to follow the instructions to start the applications.**', icon="ℹ️")
 #----------------------------------------
 # Set the background image
-# st.divider()
+st.divider()
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Types
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ st.sidebar.divider()
 #---------------------------------------------------------------------------------------------------------------------------------
 if eda == "Basics" :
 
-  st.divider()
+  #st.divider()
   stats_expander = st.expander("**Knowledge**", expanded=True)
   with stats_expander: 
         
