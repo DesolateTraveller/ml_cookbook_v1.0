@@ -132,24 +132,24 @@ if file is not None:
 ### Content
 #---------------------------------------------------------------------------------------------------------------------------------
 
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["**Identification**","**Removal**","**Visualization**","**Correleation**","**Cleaning**","**Encoding**","**Scalling**","**Sampling**","**Selection**"])
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["**Identification**","**Removal**","**Visualization**","**Correleation**","**Cleaning**","**Encoding**","**Scalling**","**Sampling**","**Selection**"])
 
 
 #---------------------------------------------------------------------------------------------------------------------------------
 ## Feature Import & Identification
 #---------------------------------------------------------------------------------------------------------------------------------
 
-    with tab1:
+        with tab1:
         
-        st.subheader("Feature Information", divider='blue') 
+            st.subheader("Feature Information", divider='blue') 
 
-        st.table(df.head(3))
-        st.divider() 
+            st.table(df.head(3))
+            st.divider() 
               
-        st.subheader("Characteristics", divider='blue') 
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
+            st.subheader("Characteristics", divider='blue') 
+            col1, col2, col3, col4, col5, col6 = st.columns(6)
 
-        col1.metric('**Number of input values (rows)**', df.shape[0], help='number of rows in the dataframe')
-        col2.metric('**Number of variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
-        col3.metric('**Number of numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
-        col4.metric('**Number of categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
+            col1.metric('**Number of input values (rows)**', df.shape[0], help='number of rows in the dataframe')
+            col2.metric('**Number of variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
+            col3.metric('**Number of numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
+            col4.metric('**Number of categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
