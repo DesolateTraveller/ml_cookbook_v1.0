@@ -56,7 +56,7 @@ from sklearn.metrics import accuracy_score
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Title and description for your Streamlit app
 #---------------------------------------------------------------------------------------------------------------------------------
-st.set_page_config(page_title="Feature Engineering CookBook | v0.2",
+st.set_page_config(page_title="FE CookBook | v0.3",
                    layout="wide", 
                     page_icon="📊",               
                    initial_sidebar_state="auto")
@@ -119,6 +119,39 @@ with stats_expander:
         - 8 | **Feature Selection** :            Checking of multi collinearity, p values, recursive feature elimination (via chi-square method).
         - 9 | **Feature Sampling** :             Redefine the datasets to increase the performance.
         ''')
-    
 
+#----------------------------------------
+#   
 file = st.file_uploader("**:blue[Choose a file]**",type=["xlsx","csv"],accept_multiple_files=True,key=0)
+if file is not None:
+
+
+#---------------------------------------------------------------------------------------------------------------------------------
+### Content
+#---------------------------------------------------------------------------------------------------------------------------------
+
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["**Identification**","**Removal**","**Visualization**","**Correleation**","**Cleaning**","**Encoding**","**Scalling**","**Sampling**","**Selection**"])
+
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Import & Identification
+#---------------------------------------------------------------------------------------------------------------------------------
+
+    with tab1:
+        
+        df = pd.DataFrame()
+        for file in file:
+            df = pd.read_csv(file)
+
+            st.subheader("Feature Information", divider='blue') 
+
+            st.table(df.head(3))
+            st.divider() 
+              
+            st.subheader("Characteristics", divider='blue') 
+            col1, col2, col3, col4, col5, col6 = st.columns(6)
+
+            col1.metric('**Number of input values (rows)**', df.shape[0], help='number of rows in the dataframe')
+            col2.metric('**Number of variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
+            col3.metric('**Number of numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
+            col4.metric('**Number of categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
