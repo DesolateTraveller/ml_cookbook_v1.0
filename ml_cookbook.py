@@ -143,7 +143,7 @@ if file is not None:
         
             st.subheader("Feature Information", divider='blue') 
 
-            st.table(df.head(3))
+            st.table(df.head())
             st.divider() 
               
             st.subheader("Characteristics", divider='blue') 
@@ -153,3 +153,32 @@ if file is not None:
             col2.metric('**Number of variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
             col3.metric('**Number of numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
             col4.metric('**Number of categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Removal
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab2:
+
+            if st.checkbox("**🗑️ Feature Drop**"):
+                feature_to_drop = st.selectbox("**Select Feature to Drop**", df.columns)
+                #df_dropped = df.drop(columns=[feature_to_drop])
+                if feature_to_drop:
+                    #col1, col2, col3 = st.columns([1, 0.5, 1])
+                        if st.button("Apply", key="delete"):
+                            st.session_state.delete_features = True
+                            st.session_state.df = df.drop(feature_to_drop, axis=1)
+                                
+                            st.divider()
+                            st.table(st.session_state.df.head(2))
+                            # Download link for treated data
+                            st.download_button("**Download Deleted Data**", st.session_state.df.to_csv(index=False), file_name="deleted_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Visualization
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab3:      
+
+            pyg_html = pyg.to_html(df,env='streamlit', return_html=True)
+            components.html(pyg_html, height=1000, scrolling=True)
