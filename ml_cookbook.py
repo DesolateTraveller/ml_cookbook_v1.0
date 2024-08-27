@@ -76,6 +76,28 @@ st.info('**Disclaimer : :blue[Thank you for visiting the app] | Unauthorized use
 ### Functions & Definitions
 #---------------------------------------------------------------------------------------------------------------------------------
 
+@st.cache_data(ttl="2h")
+def encode_features(data, encoder):
+    if encoder == 'Label Encoder':
+        encoder = LabelEncoder()
+        encoded_data = data.apply(encoder.fit_transform)
+                        
+    elif encoder == 'One-Hot Encoder':
+        encoder = OneHotEncoder(drop='first', sparse=False)
+        encoded_data = pd.DataFrame(encoder.fit_transform(data), columns=encoder.get_feature_names(data.columns))
+    return encoded_data
+
+@st.cache_data(ttl="2h")
+def scale_features(data, scaler):
+    if scaler == 'Standard Scaler':
+        scaler = StandardScaler()
+    elif scaler == 'Min-Max Scaler':
+        scaler = MinMaxScaler()
+    elif scaler == 'Robust Scaler':
+        scaler = RobustScaler()
+    scaled_data = scaler.fit_transform(data)
+    scaled_df = pd.DataFrame(scaled_data, columns=data.columns)
+    return scaled_df
 
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Main App
@@ -220,7 +242,7 @@ if file is not None:
 ## Feature Cleaning
 #---------------------------------------------------------------------------------------------------------------------------------
 
-        with tab4:   
+        with tab5:   
 
                 
                 st.subheader("Missing Values Check & Treatment",divider='blue')
@@ -371,3 +393,39 @@ if file is not None:
 
                                     st.success("Outliers capped. Preview of the capped dataset:")
                                     st.write(df.head())
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Encoding
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab6:   
+     
+            encoding_methods = ['Label Encoder', 'One-Hot Encoder']
+            selected_encoder = st.selectbox("**Select a feature encoding method**", encoding_methods)
+                    
+            encoded_df = encode_features(df, selected_encoder)
+            st.table(encoded_df.head(2))  
+
+            # Download link for encoded data
+            st.download_button("**Download Encoded Data**", encoded_df.to_csv(index=False), file_name="encoded_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Scalling
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab7:   
+
+            scaling_methods = ['Standard Scaler', 'Min-Max Scaler', 'Robust Scaler']
+            selected_scaler = st.selectbox("**Select a feature scaling method**", scaling_methods)
+
+            if st.button("**Apply Feature Scalling**", key='f_scl'):
+                scaled_df = scale_features(encoded_df, selected_scaler)
+                st.table(scaled_df.head(2))
+                # Download link for scaled data
+                st.download_button("**Download Scaled Data**", scaled_df.to_csv(index=False), file_name="scaled_data.csv")
+                    
+            else:
+                df = df.copy()
+                st.table(df.head(2))
+                # Download link for scaled data
+                st.download_button("**Download Original Data**", df.to_csv(index=False), file_name="original_data.csv")
