@@ -1,4 +1,3 @@
-
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Authenticator
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -182,3 +181,189 @@ if file is not None:
 
             pyg_html = pyg.to_html(df,env='streamlit', return_html=True)
             components.html(pyg_html, height=1000, scrolling=True)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Correleation
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab4:      
+
+                #----------------------------------------
+                for feature in df.columns: 
+                    if df[feature].dtype == 'object': 
+                        print('\n')
+                        print('feature:',feature)
+                        print(pd.Categorical(df[feature].unique()))
+                        print(pd.Categorical(df[feature].unique()).codes)
+                        df[feature] = pd.Categorical(df[feature]).codes
+                #----------------------------------------
+                @st.cache_data(ttl="2h")        
+                def plot_feature_correlation(df):
+                    # Calculate correlation matrix
+                    corr_matrix = df.corr()
+
+                    # Plot heatmap
+                    fig, ax = plt.subplots(figsize=(10,10))
+                    ax = sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f")
+                    plt.title("Feature Correlation Heatmap")
+                    plt.xticks(rotation=45)
+                    plt.yticks(rotation=45)
+                    st.pyplot(fig)
+
+                plot_feature_correlation(df)
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Cleaning
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab4:   
+
+                
+                st.subheader("Missing Values Check & Treatment",divider='blue')
+                col1, col2 = st.columns((0.2,0.8))
+
+                with col1:
+                    @st.cache_data(ttl="2h")
+                    def check_missing_values(data):
+                            missing_values = data.isnull().sum()
+                            missing_values = missing_values[missing_values > 0]
+                            return missing_values 
+                    missing_values = check_missing_values(df)
+
+                    if missing_values.empty:
+                            st.success("**No missing values found!**")
+                    else:
+                            st.warning("**Missing values found!**")
+                            st.write("**Number of missing values:**")
+                            st.table(missing_values)
+
+                            with col2:        
+                                #treatment_option = st.selectbox("**Select a treatment option**:", ["Impute with Mean","Drop Missing Values", ])
+        
+                                # Perform treatment based on user selection
+                                #if treatment_option == "Drop Missing Values":
+                                    #df = df.dropna()
+                                    #st.success("Missing values dropped. Preview of the cleaned dataset:")
+                                    #st.table(df.head())
+            
+                                #elif treatment_option == "Impute with Mean":
+                                    #df = df.fillna(df.mean())
+                                    #st.success("Missing values imputed with mean. Preview of the imputed dataset:")
+                                    #st.table(df.head())
+                                 
+                                # Function to handle missing values for numerical variables
+                                @st.cache_data(ttl="2h")
+                                def handle_numerical_missing_values(data, numerical_strategy):
+                                    imputer = SimpleImputer(strategy=numerical_strategy)
+                                    numerical_features = data.select_dtypes(include=['number']).columns
+                                    data[numerical_features] = imputer.fit_transform(data[numerical_features])
+                                    return data
+
+                                # Function to handle missing values for categorical variables
+                                @st.cache_data(ttl="2h")
+                                def handle_categorical_missing_values(data, categorical_strategy):
+                                    imputer = SimpleImputer(strategy=categorical_strategy, fill_value='no_info')
+                                    categorical_features = data.select_dtypes(exclude=['number']).columns
+                                    data[categorical_features] = imputer.fit_transform(data[categorical_features])
+                                    return data            
+
+                                numerical_strategies = ['mean', 'median', 'most_frequent']
+                                categorical_strategies = ['constant','most_frequent']
+                                st.write("**Missing Values Treatment:**")
+                                col1, col2 = st.columns(2)
+                                with col1:
+                                    selected_numerical_strategy = st.selectbox("**Select a strategy for treatment : Numerical variables**", numerical_strategies)
+                                with col2:
+                                    selected_categorical_strategy = st.selectbox("**Select a strategy for treatment : Categorical variables**", categorical_strategies)  
+                                
+                                #if st.button("**Apply Missing Values Treatment**"):
+                                cleaned_df = handle_numerical_missing_values(df, selected_numerical_strategy)
+                                cleaned_df = handle_categorical_missing_values(cleaned_df, selected_categorical_strategy)   
+                                st.table(cleaned_df.head(2))
+
+                                # Download link for treated data
+                                st.download_button("**Download Treated Data**", cleaned_df.to_csv(index=False), file_name="treated_data.csv")
+
+                #with col2:
+
+                st.subheader("Duplicate Values Check",divider='blue') 
+                if st.checkbox("Show Duplicate Values"):
+                    if missing_values.empty:
+                        st.table(df[df.duplicated()].head(2))
+                    else:
+                        st.table(cleaned_df[cleaned_df.duplicated()].head(2))
+
+                #with col4:
+
+                    #x_column = st.selectbox("Select x-axis column:", options = df.columns.tolist()[0:], index = 0)
+                    #y_column = st.selectbox("Select y-axis column:", options = df.columns.tolist()[0:], index = 1)
+                    #chart = alt.Chart(df).mark_boxplot(extent='min-max').encode(x=x_column,y=y_column)
+                    #st.altair_chart(chart, theme=None, use_container_width=True)  
+
+                st.subheader("Outliers Check & Treatment",divider='blue')
+                @st.cache_data(ttl="2h")
+                def check_outliers(data):
+                                # Assuming we're checking for outliers in numerical columns
+                                numerical_columns = data.select_dtypes(include=[np.number]).columns
+                                outliers = pd.DataFrame(columns=['Column', 'Number of Outliers'])
+
+                                for column in numerical_columns:
+                                    Q1 = data[column].quantile(0.25)
+                                    Q3 = data[column].quantile(0.75)
+                                    IQR = Q3 - Q1
+
+                                    # Define a threshold for outliers
+                                    threshold = 1.5
+
+                                    # Find indices of outliers
+                                    outliers_indices = ((data[column] < Q1 - threshold * IQR) | (data[column] > Q3 + threshold * IQR))
+
+                                    # Count the number of outliers
+                                    num_outliers = outliers_indices.sum()
+                                    outliers = outliers._append({'Column': column, 'Number of Outliers': num_outliers}, ignore_index=True)
+
+                                return outliers
+                
+                if missing_values.empty:
+                    df = df.copy()
+                else:
+                    df = cleaned_df.copy()
+
+                col1, col2 = st.columns((0.2,0.8))
+
+                with col1:
+                        # Check for outliers
+                        outliers = check_outliers(df)
+
+                        # Display results
+                        if outliers.empty:
+                            st.success("**No outliers found!**")
+                        else:
+                            st.warning("**Outliers found!**")
+                            st.write("**Number of outliers:**")
+                            st.table(outliers)
+                    
+                with col2:
+                        # Treatment options
+                        treatment_option = st.selectbox("**Select a treatment option:**", ["Cap Outliers","Drop Outliers", ])
+
+                            # Perform treatment based on user selection
+                        if treatment_option == "Drop Outliers":
+                                df = df[~outliers['Column'].isin(outliers[outliers['Number of Outliers'] > 0]['Column'])]
+                                st.success("Outliers dropped. Preview of the cleaned dataset:")
+                                st.write(df.head())
+
+                        elif treatment_option == "Cap Outliers":
+                                df = df.copy()
+                                for column in outliers['Column'].unique():
+                                    Q1 = df[column].quantile(0.25)
+                                    Q3 = df[column].quantile(0.75)
+                                    IQR = Q3 - Q1
+                                    threshold = 1.5
+
+                                    # Cap outliers
+                                    df[column] = np.where(df[column] < Q1 - threshold * IQR, Q1 - threshold * IQR, df[column])
+                                    df[column] = np.where(df[column] > Q3 + threshold * IQR, Q3 + threshold * IQR, df[column])
+
+                                    st.success("Outliers capped. Preview of the capped dataset:")
+                                    st.write(df.head())
