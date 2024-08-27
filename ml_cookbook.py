@@ -411,7 +411,7 @@ if file is not None:
             encoded_df = encode_features(df, selected_encoder)
             st.table(encoded_df.head())  
 
-            # Download link for encoded data
+            st.divider()
             st.download_button("**Download Encoded Data**", encoded_df.to_csv(index=False), file_name="encoded_data.csv")
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -424,15 +424,19 @@ if file is not None:
             selected_scaler = st.selectbox("**Select a feature scaling method**", scaling_methods)
 
             if st.button("**Apply Feature Scalling**", key='f_scl'):
+
+                st.divider()
                 scaled_df = scale_features(encoded_df, selected_scaler)
                 st.table(scaled_df.head())
-                # Download link for scaled data
+
+                st.divider()
                 st.download_button("**Download Scaled Data**", scaled_df.to_csv(index=False), file_name="scaled_data.csv")
                     
             else:
                 df = df.copy()
                 st.table(df.head())
-                # Download link for scaled data
+
+                st.divider()
                 st.download_button("**Download Original Data**", df.to_csv(index=False), file_name="original_data.csv")
 
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -445,6 +449,7 @@ if file is not None:
             sampled_features = random_feature_sampling(df, num_features)
             st.write(sampled_features.head())
 
+            st.divider()
             st.download_button("**Download Sampled Data**", df.to_csv(index=False), file_name="sampled_data.csv")
 
 #---------------------------------------------------------------------------------------------------------------------------------
