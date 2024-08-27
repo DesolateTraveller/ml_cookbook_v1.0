@@ -88,18 +88,18 @@ with stats_expander:
         st.info('''
         **Machine Learning**
 
-            Machine learning is a field of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed. Here are some key points about machine learning:
+        Machine learning is a field of artificial intelligence that enables computers to learn and improve from experience without being explicitly programmed. Here are some key points about machine learning:
 
-            - It involves developing algorithms that can analyze data and make predictions or decisions without being specifically told what to do. The algorithms "learn" by detecting patterns in data.
-            - Machine learning algorithms build a mathematical model from sample data, known as "training data", to make predictions or decisions without being explicitly programmed to perform the task.
+        - It involves developing algorithms that can analyze data and make predictions or decisions without being specifically told what to do. The algorithms "learn" by detecting patterns in data.
+        - Machine learning algorithms build a mathematical model from sample data, known as "training data", to make predictions or decisions without being explicitly programmed to perform the task.
 
-            In summary, machine learning allows computers to learn patterns from data to make decisions and predictions, rather than requiring explicit programming for every task. It allows for systems and services that adapt and evolve over time.
+        In summary, machine learning allows computers to learn patterns from data to make decisions and predictions, rather than requiring explicit programming for every task. It allows for systems and services that adapt and evolve over time.
             
-            Further, it can be subdivided into the following :
-            - 1 | **Supervised Learning** 
-            - 2 | **Un supervised Learning**
-            - 3 | **Semi supervised Learning** 
-            - 4 | **Reinforcement Learning**             
+        Further, it can be subdivided into the following :
+        - 1 | **Supervised Learning** 
+        - 2 | **Un supervised Learning**
+        - 3 | **Semi supervised Learning** 
+        - 4 | **Reinforcement Learning**             
             
         **Feature engineering** 
                     
@@ -122,4 +122,3 @@ with stats_expander:
     
 
 file = st.file_uploader("**:blue[Choose a file]**",type=["xlsx","csv"],accept_multiple_files=True,key=0)
- 
