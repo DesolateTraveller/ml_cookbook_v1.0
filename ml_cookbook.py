@@ -99,6 +99,11 @@ def scale_features(data, scaler):
     scaled_df = pd.DataFrame(scaled_data, columns=data.columns)
     return scaled_df
 
+@st.cache_data(ttl="2h")
+def random_feature_sampling(df, num_features):
+    sampled_features = df.sample(n=num_features, axis=1)
+    return sampled_features
+
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Main App
 #---------------------------------------------------------------------------------------------------------------------------------
@@ -404,7 +409,7 @@ if file is not None:
             selected_encoder = st.selectbox("**Select a feature encoding method**", encoding_methods)
                     
             encoded_df = encode_features(df, selected_encoder)
-            st.table(encoded_df.head(2))  
+            st.table(encoded_df.head())  
 
             # Download link for encoded data
             st.download_button("**Download Encoded Data**", encoded_df.to_csv(index=False), file_name="encoded_data.csv")
@@ -420,12 +425,133 @@ if file is not None:
 
             if st.button("**Apply Feature Scalling**", key='f_scl'):
                 scaled_df = scale_features(encoded_df, selected_scaler)
-                st.table(scaled_df.head(2))
+                st.table(scaled_df.head())
                 # Download link for scaled data
                 st.download_button("**Download Scaled Data**", scaled_df.to_csv(index=False), file_name="scaled_data.csv")
                     
             else:
                 df = df.copy()
-                st.table(df.head(2))
+                st.table(df.head())
                 # Download link for scaled data
                 st.download_button("**Download Original Data**", df.to_csv(index=False), file_name="original_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Sampling
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab8:  
+
+            num_features = st.number_input("Number of Features to Sample", min_value=1, step=1, value=1)
+            sampled_features = random_feature_sampling(df, num_features)
+            st.write(sampled_features.head())
+
+            st.download_button("**Download Sampled Data**", df.to_csv(index=False), file_name="sampled_data.csv")
+
+#---------------------------------------------------------------------------------------------------------------------------------
+## Feature Selection
+#---------------------------------------------------------------------------------------------------------------------------------
+
+        with tab9:  
+
+            target_variable = st.multiselect("**Target (Dependent) Variable**", df.columns)
+
+            with col2:
+
+                st.subheader("Feature Selection",divider='blue') 
+                #----------------------------------------
+                for feature in df.columns: 
+                    if df[feature].dtype == 'object': 
+                        print('\n')
+                        print('feature:',feature)
+                        print(pd.Categorical(df[feature].unique()))
+                        print(pd.Categorical(df[feature].unique()).codes)
+                        df[feature] = pd.Categorical(df[feature]).codes
+                #----------------------------------------
+
+                fsel_method = st.selectbox("**Select Feature Selection Method**", ["VIF", "SelectKBest", "VarianceThreshold" ])
+                st.divider()
+                if fsel_method == "VIF":   
+                    
+                    st.markdown("**Method 1 : Checking VIF Values**")
+                    vif_threshold = st.number_input("**VIF Threshold**", 1.5, 10.0, 5.0)
+                    @st.cache_data(ttl="2h")
+                    def calculate_vif(data):
+                        X = data.values
+                        vif_data = pd.DataFrame()
+                        vif_data["Variable"] = data.columns
+                        vif_data["VIF"] = [variance_inflation_factor(X, i) for i in range(X.shape[1])]
+                        vif_data = vif_data.sort_values(by="VIF", ascending=False)
+                        return vif_data
+
+                    # Function to drop variables with VIF exceeding the threshold
+                    @st.cache_data(ttl="2h")
+                    def drop_high_vif_variables(data, threshold):
+                        vif_data = calculate_vif(data)
+                        high_vif_variables = vif_data[vif_data["VIF"] > threshold]["Variable"].tolist()
+                        data = data.drop(columns=high_vif_variables)
+                        return data
+                                       
+                    st.markdown(f"Iterative VIF Thresholding (Threshold: {vif_threshold})")
+                    #X = df.drop(columns = target_variable)
+                    vif_data = drop_high_vif_variables(df, vif_threshold)
+                    vif_data = vif_data.drop(columns = target_variable)
+                    selected_features = vif_data.columns
+                    st.markdown("**Selected Features (considering VIF values in ascending orders)**")
+                    st.table(selected_features)
+
+                if fsel_method == "SelectKBest":  
+
+                    st.markdown("**Method 2 : Checking Selectkbest Method**")          
+                    method = st.selectbox("**Select Feature Selection Method**", ["f_classif", "f_regression", "chi2", "mutual_info_classif"])
+                    num_features_to_select = st.slider("**Select Number of Independent Features**", min_value=1, max_value=len(df.columns), value=5)
+
+                    # Perform feature selection
+                    if "f_classif" in method:
+                            feature_selector = SelectKBest(score_func=f_classif, k=num_features_to_select)
+
+                    elif "f_regression" in method:
+                            feature_selector = SelectKBest(score_func=f_regression, k=num_features_to_select)
+
+                    elif "chi2" in method:
+                            # Make sure the data is non-negative for chi2
+                            df[df < 0] = 0
+                            feature_selector = SelectKBest(score_func=chi2, k=num_features_to_select)
+
+                    elif "mutual_info_classif" in method:
+                            # Make sure the data is non-negative for chi2
+                            df[df < 0] = 0
+                            feature_selector = SelectKBest(score_func=mutual_info_classif, k=num_features_to_select)
+
+                    X = df.drop(columns = target_variable)  # Adjust 'Target' to your dependent variable
+                    y = df[target_variable]  # Adjust 'Target' to your dependent variable
+                    X_selected = feature_selector.fit_transform(X, y)
+
+                    # Display selected features
+                    selected_feature_indices = feature_selector.get_support(indices=True)
+                    selected_features_kbest = X.columns[selected_feature_indices]
+                    st.markdown("**Selected Features (considering values in 'recursive feature elimination' method)**")
+                    st.table(selected_features_kbest)
+
+                if fsel_method == "VarianceThreshold":  
+
+                    st.markdown("**Method 3 : Checking VarianceThreshold Method**")    
+                    def variance_threshold_feature_selection(df, threshold):
+
+                        X = df.drop(columns=df[target_variable])  
+                        selector = VarianceThreshold(threshold=threshold)
+                        X_selected = selector.fit_transform(X)
+
+                        selected_feature_indices = selector.get_support(indices=True)
+
+                        selected_feature_names = X.columns[selected_feature_indices]
+                        selected_df = pd.DataFrame(X_selected, columns=selected_feature_names)
+
+                        return selected_df
+                    
+                    threshold = st.number_input("Variance Threshold", min_value=0.0, step=0.01, value=0.0)
+                    selected_df = variance_threshold_feature_selection(df, threshold)
+                    st.write(selected_df.head())
+
+
+else:
+    st.warning("Please upload a excel or csv file.")
