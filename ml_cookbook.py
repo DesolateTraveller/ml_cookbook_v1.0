@@ -202,12 +202,12 @@ if file is not None:
             st.subheader("Characteristics", divider='blue') 
             col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
-            col1.metric('***input values (rows)**', df.shape[0], help='number of rows in the dataframe')
+            col1.metric('**input values (rows)**', df.shape[0], help='number of rows in the dataframe')
             col2.metric('**variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
             col3.metric('**numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
             col4.metric('**categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
             col5.metric('**missing values**', df.isnull().sum().sum(), help='Total missing values in the dataset')
-            col6.metric('**Unique categorical values**', sum(df.select_dtypes(include=['object']).nunique()), help='Sum of unique values in categorical variables')
+            col6.metric('**unique categorical values**', sum(df.select_dtypes(include=['object']).nunique()), help='Sum of unique values in categorical variables')
 
 #---------------------------------------------------------------------------------------------------------------------------------
 ## Feature Removal
