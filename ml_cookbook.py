@@ -200,7 +200,7 @@ if file is not None:
             st.divider() 
               
             st.subheader("Characteristics", divider='blue') 
-            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(6)
+            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
             col1.metric('***input values (rows)**', df.shape[0], help='number of rows in the dataframe')
             col2.metric('**variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
