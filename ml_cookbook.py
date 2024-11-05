@@ -67,7 +67,7 @@ st.title(f""":rainbow[Feature Engineering CookBook]""")
     #for best view of the app, please **zoom-out** the browser to **75%**.
     #''',
     #unsafe_allow_html=True)
-st.info('**A lightweight feature engineering streamlit app that identify important features, treat missing values & outliers, scale & sample and encode the input information.**', icon="ℹ️")
+#st.info('**A lightweight feature engineering streamlit app that identify important features, treat missing values & outliers, scale & sample and encode the input information.**', icon="ℹ️")
 #----------------------------------------
 # Set the background image
 #st.divider()
@@ -109,7 +109,6 @@ def encode_features(data, encoder):
     if encoder == 'Label Encoder':
         encoder = LabelEncoder()
         encoded_data = data.apply(encoder.fit_transform)
-                        
     elif encoder == 'One-Hot Encoder':
         encoder = OneHotEncoder(drop='first', sparse=False)
         encoded_data = pd.DataFrame(encoder.fit_transform(data), columns=encoder.get_feature_names(data.columns))
@@ -201,12 +200,14 @@ if file is not None:
             st.divider() 
               
             st.subheader("Characteristics", divider='blue') 
-            col1, col2, col3, col4, col5, col6 = st.columns(6)
+            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(6)
 
-            col1.metric('**Number of input values (rows)**', df.shape[0], help='number of rows in the dataframe')
-            col2.metric('**Number of variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
-            col3.metric('**Number of numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
-            col4.metric('**Number of categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
+            col1.metric('***input values (rows)**', df.shape[0], help='number of rows in the dataframe')
+            col2.metric('**variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
+            col3.metric('**numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
+            col4.metric('**categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
+            col5.metric('**missing values**', df.isnull().sum().sum(), help='Total missing values in the dataset')
+            col6.metric('**Unique categorical values**', sum(df.select_dtypes(include=['object']).nunique()), help='Sum of unique values in categorical variables')
 
 #---------------------------------------------------------------------------------------------------------------------------------
 ## Feature Removal
