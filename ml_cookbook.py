@@ -84,6 +84,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 #----------------------------------------
 st.markdown(
     """
@@ -93,7 +94,7 @@ st.markdown(
         left: 0;
         bottom: 0;
         width: 100%;
-        background-color: #f1f1f1;
+        background-color: #F0F2F6;
         text-align: center;
         padding: 10px;
         font-size: 14px;
@@ -110,10 +111,11 @@ st.markdown(
     </style>
 
     <div class="footer">
-        <p>© 2024 | Developed by: <span class="highlight">Avijit Chakraborty</span> | Contact : <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a></p> <span class="highlight">Thank you for visiting the app | This app is created for internal use, unauthorized uses or copying is strictly prohibited | For best view of the app, please zoom out the browser to 75%.</span>
+        <p>© 2025 | Created by : <span class="highlight">Avijit Chakraborty</span> | <a href="mailto:avijit.mba18@gmail.com"> 📩 </a></p> <span class="highlight">Thank you for visiting the app | Unauthorized uses or copying is strictly prohibited | For best view of the app, please zoom out the browser to 75%.</span>
     </div>
     """,
     unsafe_allow_html=True)
+
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Functions & Definitions
 #---------------------------------------------------------------------------------------------------------------------------------
