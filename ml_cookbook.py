@@ -210,7 +210,9 @@ with st.popover("**:red[Knowledge]**",disabled=False, use_container_width=True,h
         - 2 | **Un supervised Learning**
         - 3 | **Semi supervised Learning** 
         - 4 | **Reinforcement Learning**             
-            
+        
+        -----------------------------------------------------------------------------------------------------------------------------   
+        
         **Feature engineering** 
                     
           It is a very important part of dataset preparation. 
