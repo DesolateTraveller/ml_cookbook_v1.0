@@ -150,7 +150,7 @@ def random_feature_sampling(df, num_features):
 @st.cache_data(ttl="2h")        
 def plot_feature_correlation(df):
     corr_matrix = df.corr()
-    fig, ax = plt.subplots(figsize=(10,10))
+    fig, ax = plt.subplots(figsize=(30,30))
     ax = sns.heatmap(corr_matrix, annot=corr_matrix.rank(axis="columns"), 
                      cmap="coolwarm", linewidth=.5,fmt=".2f")
     plt.title("Feature Correlation Heatmap")
