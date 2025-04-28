@@ -304,7 +304,7 @@ with col1:
                             df[feature] = pd.Categorical(df[feature]).codes
                     #----------------------------------------      
                     corr_matrix = plot_feature_correlation(df)
-                    fig, ax = plt.subplots(figsize=(10,10))
+                    fig, ax = plt.subplots(figsize=(30,30))
                     ax = sns.heatmap(corr_matrix, 
                                      annot=corr_matrix.rank(axis="columns"), 
                                      cmap="coolwarm", 
