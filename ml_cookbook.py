@@ -147,8 +147,16 @@ def random_feature_sampling(df, num_features):
     sampled_features = df.sample(n=num_features, axis=1)
     return sampled_features
 
+@st.cache_data(ttl="2h")        
 def plot_feature_correlation(df):
     corr_matrix = df.corr()
+    fig, ax = plt.subplots(figsize=(10,10))
+    ax = sns.heatmap(corr_matrix, annot=corr_matrix.rank(axis="columns"), 
+                     cmap="coolwarm", linewidth=.5,fmt=".2f")
+    plt.title("Feature Correlation Heatmap")
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=45)
+    st.pyplot(fig)
 
 @st.cache_data(ttl="2h")
 def check_missing_values(data):
@@ -294,7 +302,6 @@ with col1:
 
                 with tab4:      
 
-                    #----------------------------------------
                     for feature in df.columns: 
                         if df[feature].dtype == 'object': 
                             print('\n')
@@ -302,18 +309,7 @@ with col1:
                             print(pd.Categorical(df[feature].unique()))
                             print(pd.Categorical(df[feature].unique()).codes)
                             df[feature] = pd.Categorical(df[feature]).codes
-                    #----------------------------------------      
-                    corr_matrix = plot_feature_correlation(df)
-                    fig, ax = plt.subplots(figsize=(30,30))
-                    ax = sns.heatmap(corr_matrix, 
-                                     annot=corr_matrix.rank(axis="columns"), 
-                                     cmap="coolwarm", 
-                                     linewidth=.5,
-                                     fmt=".2f")
-                    plt.title("Feature Correlation Heatmap")
-                    plt.xticks(rotation=45)
-                    plt.yticks(rotation=45)
-                    st.pyplot(fig)
+                    plot_feature_correlation(df)
 
                 #---------------------------------------------------------------------------------------------------------------------------------
                 ## Feature Cleaning
