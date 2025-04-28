@@ -55,22 +55,36 @@ from sklearn.metrics import accuracy_score
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Title and description for your Streamlit app
 #---------------------------------------------------------------------------------------------------------------------------------
-st.set_page_config(page_title="FE CookBook | v0.3",
+st.set_page_config(page_title="FE CookBook | v0.4",
                    layout="wide", 
                     page_icon="📊",               
                    initial_sidebar_state="auto")
 #----------------------------------------
-st.title(f""":rainbow[Feature Engineering CookBook]""")
-#st.markdown(
-    #'''
-    #Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a> ( 📑 [Resume](https://resume-avijitc.streamlit.app/) | :bust_in_silhouette: [LinkedIn](https://www.linkedin.com/in/avijit2403/) | :computer: [GitHub](https://github.com/DesolateTraveller) ) |
-    #for best view of the app, please **zoom-out** the browser to **75%**.
-    #''',
-    #unsafe_allow_html=True)
-#st.info('**A lightweight feature engineering streamlit app that identify important features, treat missing values & outliers, scale & sample and encode the input information.**', icon="ℹ️")
+st.markdown(
+    """
+    <style>
+    .title-large {
+        text-align: center;
+        font-size: 35px;
+        font-weight: bold;
+        background: linear-gradient(to left, red, orange, blue, indigo, violet);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .title-small {
+        text-align: center;
+        font-size: 20px;
+        background: linear-gradient(to left, red, orange, blue, indigo, violet);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    </style>
+    <div class="title-large">Feature Engineering Cookbook</div>
+    <div class="title-small">Version : 0.4</div>
+    """,
+    unsafe_allow_html=True
+)
 #----------------------------------------
-# Set the background image
-#st.divider()
 st.markdown(
     """
     <style>
@@ -96,7 +110,7 @@ st.markdown(
     </style>
 
     <div class="footer">
-        <p>© 2025 | Developed by: <span class="highlight">Avijit Chakraborty</span> | Contact : <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a></p> <span class="highlight">Thank you for visiting the app | This app is created for internal use, unauthorized uses or copying is strictly prohibited | For best view of the app, please zoom out the browser to 75%.</span>
+        <p>© 2024 | Developed by: <span class="highlight">Avijit Chakraborty</span> | Contact : <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a></p> <span class="highlight">Thank you for visiting the app | This app is created for internal use, unauthorized uses or copying is strictly prohibited | For best view of the app, please zoom out the browser to 75%.</span>
     </div>
     """,
     unsafe_allow_html=True)
