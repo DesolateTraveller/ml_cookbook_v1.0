@@ -151,8 +151,9 @@ def random_feature_sampling(df, num_features):
 ### Main App
 #---------------------------------------------------------------------------------------------------------------------------------
 
-stats_expander = st.expander("**Knowledge**", expanded=False)
-with stats_expander: 
+#stats_expander = st.expander("**Knowledge**", expanded=False)
+#with stats_expander: 
+with st.popover("**:red[Knowledge]**",disabled=False, use_container_width=True,help="Tune the hyperparameters whenever required"):
         
         st.info('''
         **Machine Learning**
