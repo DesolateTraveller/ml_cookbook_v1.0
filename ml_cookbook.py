@@ -224,7 +224,7 @@ with st.popover("**:red[Knowledge]**",disabled=False, use_container_width=True,h
 
 #----------------------------------------
 
-col1, col2 = st.columns((0.2,0.8))
+col1, col2 = st.columns((0.15,0.85))
 with col1:
 
     file = st.file_uploader("**:blue[Choose a file]**",type=["xlsx","csv"],accept_multiple_files=True,key=0)
