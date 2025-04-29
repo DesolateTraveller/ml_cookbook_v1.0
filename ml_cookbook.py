@@ -284,3 +284,21 @@ with col1:
                             col4.metric('**categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
                             col5.metric('**missing values**', df.isnull().sum().sum(), help='Total missing values in the dataset')
                             col6.metric('**unique categorical values**', sum(df.select_dtypes(include=['object']).nunique()), help='Sum of unique values in categorical variables')
+
+                    #---------------------------------------------------------------------------------------------------------------------------------
+                    ## Feature Removal
+                    #---------------------------------------------------------------------------------------------------------------------------------
+
+                    with tab2:
+                        with st.container(border=True):
+                            
+                            if st.checkbox("**🗑️ Feature Drop**"):
+                                feature_to_drop = st.selectbox("**Select Feature to Drop**", df.columns)
+                                if feature_to_drop:
+                                    if st.button("Apply", key="delete"):
+                                        st.session_state.delete_features = True
+                                        st.session_state.df = df.drop(feature_to_drop, axis=1)
+                                
+                                st.divider()
+                                st.table(st.session_state.df.head(2))
+                                st.download_button("**Download Deleted Data**", st.session_state.df.to_csv(index=False), file_name="deleted_data.csv")
