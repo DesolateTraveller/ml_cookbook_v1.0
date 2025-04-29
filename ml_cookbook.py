@@ -232,263 +232,55 @@ with st.popover("**:red[Knowledge]**",disabled=False, use_container_width=True,h
         - 9 | **Feature Sampling** :             Redefine the datasets to increase the performance.
         ''')
 
+st.markdown(
+        """
+        <style>
+        .centered-info {display: flex; justify-content: center; align-items: center; 
+                        font-weight: bold; font-size: 15px; color: #007BFF; 
+                        padding: 5px; background-color: #FFFFFF;  border-radius: 5px; border: 1px solid #007BFF;
+                        margin-top: 0px;margin-bottom: 5px;}
+        .stMarkdown {margin-top: 0px !important; padding-top: 0px !important;}                       
+        </style>
+        """,unsafe_allow_html=True,)
+
 #----------------------------------------
 
 col1, col2 = st.columns((0.15,0.85))
 with col1:
+    with st.container(border=True):
 
-    file = st.file_uploader("**:blue[Choose a file]**",type=["xlsx","csv"],accept_multiple_files=True,key=0)
-    if file is not None:
-        df = pd.DataFrame()
-        for file in file:
-            df = pd.read_csv(file)
+        file = st.file_uploader("**:blue[Choose a file]**",type=["xlsx","csv"],accept_multiple_files=True,key=0)
+        if file is not None:
+            df = pd.DataFrame()
+            for file in file:
+                df = pd.read_csv(file)
 
-            with col2:
+                with col2:
                 
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ### Content
-                #---------------------------------------------------------------------------------------------------------------------------------
+                    #---------------------------------------------------------------------------------------------------------------------------------
+                    ### Content
+                    #---------------------------------------------------------------------------------------------------------------------------------
 
-                tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["**Identification**","**Removal**","**Visualization**","**Correleation**","**Cleaning**","**Encoding**","**Scalling**","**Sampling**","**Selection**"])
+                    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["**Identification**","**Removal**","**Visualization**","**Correleation**","**Cleaning**","**Encoding**","**Scalling**","**Sampling**","**Selection**"])
 
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Import & Identification
-                #---------------------------------------------------------------------------------------------------------------------------------
+                    #---------------------------------------------------------------------------------------------------------------------------------
+                    ## Feature Import & Identification
+                    #---------------------------------------------------------------------------------------------------------------------------------
 
-                with tab1:
+                    with tab1:
+                        with st.container(border=True):
         
-                    st.subheader("Feature Information", divider='blue') 
+                            st.markdown('<div class="centered-info"><span style="margin-left: 10px;">Characteristics</span></div>',unsafe_allow_html=True,)
 
-                    st.table(df.head())
-                    st.divider() 
+                            st.table(df.head())
+                            st.divider() 
               
-                    st.subheader("Characteristics", divider='blue') 
-                    col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
+                            st.markdown('<div class="centered-info"><span style="margin-left: 10px;">Summary</span></div>',unsafe_allow_html=True,) 
+                            col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
-                    col1.metric('**input values (rows)**', df.shape[0], help='number of rows in the dataframe')
-                    col2.metric('**variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
-                    col3.metric('**numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
-                    col4.metric('**categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
-                    col5.metric('**missing values**', df.isnull().sum().sum(), help='Total missing values in the dataset')
-                    col6.metric('**unique categorical values**', sum(df.select_dtypes(include=['object']).nunique()), help='Sum of unique values in categorical variables')
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Removal
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab2:
-
-                    if st.checkbox("**🗑️ Feature Drop**"):
-                        feature_to_drop = st.selectbox("**Select Feature to Drop**", df.columns)
-                        if feature_to_drop:
-                            if st.button("Apply", key="delete"):
-                                st.session_state.delete_features = True
-                                st.session_state.df = df.drop(feature_to_drop, axis=1)
-                                
-                                st.divider()
-                                st.table(st.session_state.df.head(2))
-                                st.download_button("**Download Deleted Data**", st.session_state.df.to_csv(index=False), file_name="deleted_data.csv")
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Visualization
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab3:      
-
-                    pyg_html = pyg.to_html(df,env='streamlit', return_html=True)
-                    components.html(pyg_html, height=1000, scrolling=True)
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Correleation
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab4:      
-
-                    for feature in df.columns: 
-                        if df[feature].dtype == 'object': 
-                            print('\n')
-                            print('feature:',feature)
-                            print(pd.Categorical(df[feature].unique()))
-                            print(pd.Categorical(df[feature].unique()).codes)
-                            df[feature] = pd.Categorical(df[feature]).codes
-                    plot_feature_correlation(df)
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Cleaning
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab5:   
-
-                    st.subheader("Missing Values Check & Treatment",divider='blue')
-                    col1, col2 = st.columns((0.2,0.8))
-
-                    with col1:
-
-                        missing_values = check_missing_values(df)
-
-                        if missing_values.empty:
-                            st.success("**No missing values found!**")
-                        else:
-                            st.warning("**Missing values found!**")
-                            st.write("**Number of missing values:**")
-                            st.table(missing_values)
-
-                            with col2:        
-                                #treatment_option = st.selectbox("**Select a treatment option**:", ["Impute with Mean","Drop Missing Values", ])
-        
-                                # Perform treatment based on user selection
-                                #if treatment_option == "Drop Missing Values":
-                                    #df = df.dropna()
-                                    #st.success("Missing values dropped. Preview of the cleaned dataset:")
-                                    #st.table(df.head())
-            
-                                #elif treatment_option == "Impute with Mean":
-                                    #df = df.fillna(df.mean())
-                                    #st.success("Missing values imputed with mean. Preview of the imputed dataset:")
-                                    #st.table(df.head())
-                                 
-                                # Function to handle missing values for numerical variables
-                                @st.cache_data(ttl="2h")
-                                def handle_numerical_missing_values(data, numerical_strategy):
-                                    imputer = SimpleImputer(strategy=numerical_strategy)
-                                    numerical_features = data.select_dtypes(include=['number']).columns
-                                    data[numerical_features] = imputer.fit_transform(data[numerical_features])
-                                    return data
-
-                                # Function to handle missing values for categorical variables
-                                @st.cache_data(ttl="2h")
-                                def handle_categorical_missing_values(data, categorical_strategy):
-                                    imputer = SimpleImputer(strategy=categorical_strategy, fill_value='no_info')
-                                    categorical_features = data.select_dtypes(exclude=['number']).columns
-                                    data[categorical_features] = imputer.fit_transform(data[categorical_features])
-                                    return data            
-
-                                numerical_strategies = ['mean', 'median', 'most_frequent']
-                                categorical_strategies = ['constant','most_frequent']
-                                st.write("**Missing Values Treatment:**")
-                                col1, col2 = st.columns(2)
-                                with col1:
-                                    selected_numerical_strategy = st.selectbox("**Select a strategy for treatment : Numerical variables**", numerical_strategies)
-                                with col2:
-                                    selected_categorical_strategy = st.selectbox("**Select a strategy for treatment : Categorical variables**", categorical_strategies)  
-                                
-                                #if st.button("**Apply Missing Values Treatment**"):
-                                cleaned_df = handle_numerical_missing_values(df, selected_numerical_strategy)
-                                cleaned_df = handle_categorical_missing_values(cleaned_df, selected_categorical_strategy)   
-                                st.table(cleaned_df.head(2))
-
-                                # Download link for treated data
-                                st.download_button("**Download Treated Data**", cleaned_df.to_csv(index=False), file_name="treated_data.csv")
-
-                    st.subheader("Duplicate Values Check",divider='blue') 
-                    if st.checkbox("Show Duplicate Values"):
-                        if missing_values.empty:
-                            st.table(df[df.duplicated()].head(2))
-                        else:
-                            st.table(cleaned_df[cleaned_df.duplicated()].head(2))
-
-                    st.subheader("Outliers Check & Treatment",divider='blue')
-                
-                    if missing_values.empty:
-                        df = df.copy()
-                    else:
-                        df = cleaned_df.copy()
-
-                    col1, col2 = st.columns((0.2,0.8))
-
-                    with col1:
-                        outliers = check_outliers(df)
-                        if outliers.empty:
-                            st.success("**No outliers found!**")
-                        else:
-                            st.warning("**Outliers found!**")
-                            st.write("**Number of outliers:**")
-                            st.table(outliers)
-                    
-                    with col2:
-                        
-                        treatment_option = st.selectbox("**Select a treatment option:**", ["Cap Outliers","Drop Outliers", ])
-                        if treatment_option == "Drop Outliers":
-                                df = df[~outliers['Column'].isin(outliers[outliers['Number of Outliers'] > 0]['Column'])]
-                                st.success("Outliers dropped. Preview of the cleaned dataset:")
-                                st.write(df.head())
-
-                        elif treatment_option == "Cap Outliers":
-                                df = df.copy()
-                                for column in outliers['Column'].unique():
-                                    Q1 = df[column].quantile(0.25)
-                                    Q3 = df[column].quantile(0.75)
-                                    IQR = Q3 - Q1
-                                    threshold = 1.5
-
-                                    # Cap outliers
-                                    df[column] = np.where(df[column] < Q1 - threshold * IQR, Q1 - threshold * IQR, df[column])
-                                    df[column] = np.where(df[column] > Q3 + threshold * IQR, Q3 + threshold * IQR, df[column])
-
-                                    st.success("Outliers capped. Preview of the capped dataset:")
-                                    st.write(df.head())
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Encoding
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab6:   
-     
-                    encoding_methods = ['Label Encoder', 'One-Hot Encoder']
-                    selected_encoder = st.selectbox("**Select a feature encoding method**", encoding_methods)
-                    
-                    encoded_df = encode_features(df, selected_encoder)
-                    st.table(encoded_df.head())  
-
-                    st.divider()
-                    st.download_button("**Download Encoded Data**", encoded_df.to_csv(index=False), file_name="encoded_data.csv")
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                # Feature Scalling
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab7:   
-
-                    scaling_methods = ['Standard Scaler', 'Min-Max Scaler', 'Robust Scaler']
-                    selected_scaler = st.selectbox("**Select a feature scaling method**", scaling_methods)
-
-                    if st.button("**Apply Feature Scalling**", key='f_scl'):
-
-                        st.divider()
-                        scaled_df = scale_features(encoded_df, selected_scaler)
-                        st.table(scaled_df.head())
-
-                        st.divider()
-                        st.download_button("**Download Scaled Data**", scaled_df.to_csv(index=False), file_name="scaled_data.csv")
-
-                    else:
-                        df = df.copy()
-                        st.table(df.head())
-
-                        st.divider()
-                        st.download_button("**Download Original Data**", df.to_csv(index=False), file_name="original_data.csv")
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Sampling
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab8:  
-
-                    num_features = st.number_input("Number of Features to Sample", min_value=1, step=1, value=1)
-                    sampled_features = random_feature_sampling(df, num_features)
-                    st.write(sampled_features.head())
-
-                    st.divider()
-                    st.download_button("**Download Sampled Data**", df.to_csv(index=False), file_name="sampled_data.csv")
-
-                #---------------------------------------------------------------------------------------------------------------------------------
-                ## Feature Selection
-                #---------------------------------------------------------------------------------------------------------------------------------
-
-                with tab9:  
-
-                    target_variable = st.multiselect("**Target (Dependent) Variable**", df.columns)
-
-
-    else:
-        st.warning("Please upload a excel or csv file.")
+                            col1.metric('**input values (rows)**', df.shape[0], help='number of rows in the dataframe')
+                            col2.metric('**variables (columns)**', df.shape[1], help='number of columns in the dataframe')     
+                            col3.metric('**numerical variables**', len(df.select_dtypes(include=['float64', 'int64']).columns), help='number of numerical variables')
+                            col4.metric('**categorical variables**', len(df.select_dtypes(include=['object']).columns), help='number of categorical variables')
+                            col5.metric('**missing values**', df.isnull().sum().sum(), help='Total missing values in the dataset')
+                            col6.metric('**unique categorical values**', sum(df.select_dtypes(include=['object']).nunique()), help='Sum of unique values in categorical variables')
